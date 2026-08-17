@@ -7,7 +7,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 project_dir = os.path.dirname(script_dir)
 data_folder = os.path.join(project_dir, "data")
 
-# Zastąpiona jednolinijkowa pętla klasyczną pętlą for
 files = []
 for f in os.listdir(data_folder):
     if f.endswith(".csv"):
