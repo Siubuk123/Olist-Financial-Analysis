@@ -18,3 +18,8 @@ INNER JOIN product_category_name_translation ON products.product_category_name =
 -- Average delivery time for delivered orders
 SELECT AVG(DATEDIFF(day, order_purchase_timestamp, order_delivered_customer_date)) as avg_time_delivery FROM orders
 WHERE order_status = 'delivered';
+
+-- Filtracja z HAVING
+select seller_id from order_items
+group by seller_id
+having count(order_id) > 100

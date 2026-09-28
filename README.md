@@ -16,10 +16,15 @@ Projekt polega na przygotowaniu surowych danych pochodzących z rzeczywistego sk
 3. **Modelowanie SQL (w trakcie realizacji):** Tworzenie widoków analitycznych i zapytań agregujących kluczowe wskaźniki.
 4. **Raportowanie BI (planowane):** Połączenie bazy SQL z Power BI i budowa interaktywnego dashboardu zarządczego.
 
-## Wstępna analiza danych za pomocą zapytań SQL
+## Wstępna analiza
 
-**Zrealizowany przychód**: Łączna wartość przetworzonych płatności dla dostarczonych  zamówień wyniosła 15 422 461,77 BRL (2 983 587,81 USD). 
+Rok 2017 stanowi jedyny pełny rok kalendarzowy w zbiorze danych Olist, co czyni go najbardziej wiarygodną bazą porównawczą dla analityki sprzedaży:
 
-**Na mapie** Największym rynkiem jest stan São Paulo (SP) z liczbą 41 746 klientów — wyprzedza on Rio de Janeiro (RJ) z 12 852 klientami oraz Minas Gerais (MG) z 11 635 klientami.
+* **Czysty przychód ze sprzedaży:** **5 962 902,01 BRL**  
+  Całkowita wartość netto sprzedanych towarów dla pomyślnie doręczonych zamówień (z wyłączeniem kosztów logistyki oraz anulowanych transakcji).
+* **Średnia wartość zamówienia:** **152,55 BRL**  
+  Średnia kwota transakcji przypadająca na zamówienie opłacone przez klienta.
+* **Wolumen zamówień:** **45 101** zamówień zarejestrowanych w 2017 roku.
+* **Baza unikalnych klientów:** **43 713** unikalnych kupujących 
 
-**Logistyka**: Średni czas realizacji zamówienia (od momentu zakupu do momentu doręczenia paczki do klienta) wyniósł 12 dni.
+---
