@@ -22,3 +22,13 @@ WHERE YEAR(o.order_purchase_timestamp) = 2017
 
 -- Ilość zamowien w zaleznosci od miesiaca
 
+SELECT 
+    COUNT(order_id) as liczba_zamowien,
+    MONTH(orders.order_purchase_timestamp) as miesiac
+    FROM orders
+WHERE YEAR(orders.order_purchase_timestamp) = 2017
+GROUP BY MONTH(orders.order_purchase_timestamp)
+ORDER BY miesiac ASC;
+
+-- Udział procentowy płatności kartą
+
