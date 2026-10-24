@@ -20,6 +20,8 @@ select AVG(payment_value) as AOV from order_payments
 JOIN orders o ON order_payments.order_id = o.order_id
 WHERE YEAR(o.order_purchase_timestamp) = 2017
 
+
+SELECT 
 -- Ilość zamowien w zaleznosci od miesiaca
 
 SELECT 
@@ -30,5 +32,5 @@ WHERE YEAR(orders.order_purchase_timestamp) = 2017
 GROUP BY MONTH(orders.order_purchase_timestamp)
 ORDER BY miesiac ASC;
 
--- Udział procentowy płatności kartą
+
 
