@@ -28,6 +28,8 @@ Analiza działalności brazylijskiej platformy e-commerce **Olist** na rzeczywis
 - **Klucze i ziarnistość:** Tabele główne (`orders`, `customers`, `products`, `sellers`) nie mają duplikatów. Tabele z wieloma rekordami na jedno zamówienie (`order_items`, `order_payments`, `order_reviews`) wymagają agregacji przed łączeniem, aby uniknąć przekłamań w metrykach (np. w AOV).
 - **Braki i anomalie:** 6 z 9 tabel nie zawiera żadnych wartości `NULL`. W zamówieniach wykryto drobne niespójności (m.in. **8** doręczonych zamówień bez daty dostawy i **6** anulowanych z datą dostawy) — rekordy pozostawiono w bazie bez usuwania i będą filtrowane dopiero w metrykach logistycznych.
 - **Kategorie produktów:** **610 produktów (1,85%)** nie ma przypisanej kategorii, a **2 kategorie** (13 produktów) nie mają angielskiego tłumaczenia — w analizach wymagają łączenia przez `LEFT JOIN` i oznaczenia braków jako `Unknown`.
+- **Spójność relacji:** Pełna spójność kluczy obcych (0 osieroconych rekordów w badanych tabelach). Wykryto 775 zamówień bez przypisanych pozycji (w 99% `unavailable` i `canceled`, zero `delivered`) oraz 1 doręczone zamówienie z września 2016 r. bez rekordu płatności. W praktyce tabele można bezpiecznie łączyć bez ryzyka utraty danych o dostarczonej sprzedaży, ponieważ braki wynikają głównie z niezrealizowanych transakcji oraz pojedynczej luki w danych źródłowych z początku zbioru.
+
 
 ### Etap 2 – Wstępne wyniki sprzedaży *(rok referencyjny 2017)*
 - **Sprzedaż i wolumen:** Wartość sprzedaży doręczonych produktów wyniosła **5 962 902,01 BRL** przy **45 101** wszystkich zamówieniach (**96,29%** skutecznych doręczeń).
