@@ -1,42 +1,35 @@
-# Analiza Finansowa
+# Olist E-commerce Sales & Operations Analytics
 
-## O Projekcie
+Analiza działalności brazylijskiej platformy e-commerce **Olist** na rzeczywistych danych transakcyjnych (**09.2016 – 10.2018**), obejmująca cały proces od przygotowania danych po dashboard w Power BI. Projekt skupia się na sprzedaży, klientach, produktach i logistyce — ze względu na brak danych kosztowych nie ocenia rentowności ani zysku firmy. Surowe pliki CSV pochodzą z publicznego zbioru [Olist Brazilian E-Commerce Dataset (Kaggle)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) i są wykluczone z repozytorium (`.gitignore`).
 
-Projekt polega na przygotowaniu surowych danych pochodzących z rzeczywistego sklepu internetowego w brazylii, zapisania ich w bazie danych (microsoft sql server) oraz przeprowadzenie analizy finansowej za pomocą zapytań SQL oraz zilustrowania ich za pomocą Power BI. 
+## Technologie
+- **ETL i walidacja:** Python (`pandas`, `SQLAlchemy`)
+- **Baza danych i analiza:** Microsoft SQL Server (`T-SQL`)
+- **Wizualizacja:** Power BI (`DAX`, `Power Query`)
+- **Narzędzia:** VS Code, Git & GitHub
 
-## Zastosowane technologie
-* **Język programowania:** Python
-* **Baza Danych:** Microsoft SQL Server (T-SQL)
-* **Wizualizacja danych:** Power BI
-* **IDE:** Visual Studio Code
-* **System kontroli wersji:** Git & GitHub
+## Etapy projektu
+- [x] **Etap 0 – ETL:** Automatyczny import surowych danych CSV do SQL Server oraz walidacja poprawności załadowania.
+- [ ] **Etap 1 – Data Quality** *(w trakcie)*: Audyt duplikatów, braków danych, spójności relacji oraz poprawności dat.
+- [ ] **Etap 2 – Sales Analysis:** Analiza skali sprzedaży, sezonowości, porównania rok do roku oraz struktury płatności.
+- [ ] **Etap 3 – Customer Analysis:** Badanie powracalności klientów oraz analiza kohortowa.
+- [ ] **Etap 4 – Product & Seller Performance:** Ranking kategorii i sprzedawców wraz z analizą koncentracji sprzedaży (Pareto).
+- [ ] **Etap 5 – Logistics & Customer Experience:** Ocena terminowości dostaw i jej związku z ocenami klientów.
+- [ ] **Etap 6 – Reporting:** Przygotowanie warstwy widoków analitycznych SQL i walidacja zgodności danych.
+- [ ] **Etap 7 – Power BI:** Budowa modelu gwiazdy, miar DAX oraz interaktywnego dashboardu zarządczego.
+- [ ] **Etap 8 – Business Insights:** Sformułowanie kluczowych wniosków i rekomendacji biznesowych.
 
-## ETL
-1. **Pobranie danych:** Surowe pliki `.csv` z danymi transakcyjnymi z platformy Kaggle przechowywane są w katalogu `data/`.
-2. **Automatyzacja zasilania:** Skrypt `python/import_data.py` dynamicznie lokalizuje strukturę katalogów, odczytuje pliki CSV i przesyła je w bezpiecznych pakietyzowanych transakcjach do relacyjnej bazy danych `Olist_Finance` na lokalnym serwerze SQL.
-3. **Modelowanie SQL (w trakcie realizacji):** Tworzenie widoków analitycznych i zapytań agregujących kluczowe wskaźniki.
-4. **Raportowanie BI (planowane):** Połączenie bazy SQL z Power BI i budowa interaktywnego dashboardu zarządczego.
+## Dotychczasowe wnioski
 
-## Wyniki analizy: Przegląd sprzedaży (`01_sales_overview.sql`)
-Rok **2017** stanowi jedyny pełny rok kalendarzowy w zbiorze danych Olist, dlatego posłużył jako główny punkt odniesienia dla oceny kondycji finansowej platformy.
+### Etap 0 – ETL
+- Wszystkie 9 tabel ze zbioru Kaggle zostało załadowanych do bazy ze **100% zgodnością** liczby wierszy i kolumn między plikami CSV a SQL Server.
 
-### Główne wskaźniki (KPI)
-- **Czysty przychód ze sprzedaży:** **5 962 902,01 BRL**  
-  Całkowita wartość netto sprzedanych towarów dla pomyślnie doręczonych zamówień (`delivered`), z wyłączeniem kosztów dostawy oraz transakcji anulowanych.
-- **Średnia wartość zamówienia (AOV):** **152,55 BRL**  
-  Średnia kwota transakcji przypadająca na pojedynczą płatność dokonaną przez klienta.
-- **Wolumen zamówień:** **45 101**  
-  Łączna liczba wszystkich zamówień zarejestrowanych w systemie w 2017 roku.
-- **Baza klientów:** **43 713**  
-  Liczba unikalnych kupujących. Stosunek liczby zamówień do liczby klientów wynosi **1,03**, co wskazuje na model biznesowy zdominowany przez zakupy jednorazowe i niski wskaźnik powracalności.
+### Etap 1 – Data Quality *(w trakcie)*
+- **Klucze i ziarnistość:** Tabele główne (`orders`, `customers`, `products`, `sellers`) nie mają duplikatów. Tabele z wieloma rekordami na jedno zamówienie (`order_items`, `order_payments`, `order_reviews`) wymagają agregacji przed łączeniem, aby uniknąć przekłamań w metrykach (np. w AOV).
+- **Braki i anomalie:** 6 z 9 tabel nie zawiera żadnych wartości `NULL`. W zamówieniach wykryto drobne niespójności (m.in. **8** doręczonych zamówień bez daty dostawy i **6** anulowanych z datą dostawy) — rekordy pozostawiono w bazie bez usuwania i będą filtrowane dopiero w metrykach logistycznych.
+- **Kategorie produktów:** **610 produktów (1,85%)** nie ma przypisanej kategorii, a **2 kategorie** (13 produktów) nie mają angielskiego tłumaczenia — w analizach wymagają łączenia przez `LEFT JOIN` i oznaczenia braków jako `Unknown`.
 
-### Dynamika miesięczna i sezonowość (2017)
-Platforma odnotowała niemal **9-krotny wzrost** miesięcznych obrotów między styczniem a listopadem (z **111 798,36 BRL** do **987 765,37 BRL**). Wyraźny pik w listopadzie (**+62,9%** wolumenu zamówień względem października) odzwierciedla wpływ wyprzedaży Black Friday.
-
-### Logistyka i skuteczność realizacji zamówień
-- **Udział kosztów dostawy (Freight Ratio):** **13,85%**  
-  Taki odsetek całkowitej kwoty brutto płaconej przez klientów (`price + freight_value`) stanowią koszty transportu.
-- **Skuteczność doręczeń:** **96,29%** (**43 428** zamówień) zakończyło się skutecznym dostarczeniem do klienta (`delivered`).
-- **Straty i niezrealizowane zamówienia:** Łącznie **1,60%** wolumenu nie doszło do skutku z powodu braku towaru w magazynie (`unavailable` – **1,01%**, 457 szt.) lub anulowania transakcji (`canceled` – **0,59%**, 265 szt.). Pozostałe **2,11%** stanowiły zamówienia będące w trakcie procesowania lub transportu (`shipped` – 1,18%, `processing` – 0,53%, `invoiced` – 0,39%, `created`/`approved` – 0,01%).
-
----
+### Etap 2 – Wstępne wyniki sprzedaży *(rok referencyjny 2017)*
+- **Sprzedaż i wolumen:** Wartość sprzedaży doręczonych produktów wyniosła **5 962 902,01 BRL** przy **45 101** wszystkich zamówieniach (**96,29%** skutecznych doręczeń).
+- **Koszyk i dostawa:** Średnia wartość zamówienia (AOV) wyniosła **[wpisz nowy wynik] BRL**, a koszty transportu stanowiły **13,85%** wartości koszyka brutto.
+- **Klienci i sezonowość:** Odnotowano **43 713** unikalnych kupujących (1,03 zamówienia na klienta — dominacja zakupów jednorazowych) oraz niemal 9-krotny wzrost miesięcznej sprzedaży od stycznia do listopadowego piku Black Friday (+62,9% zamówień m/m).
